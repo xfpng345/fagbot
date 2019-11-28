@@ -9,7 +9,7 @@ task :update_feed => :environment do
     config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
     config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
   }
-
+  #urlのサイトからfear&greed indexをスクレイピング
   agent = Mechanize.new
   url = agent.get("https://money.cnn.com/data/fear-and-greed/")
   elements = url.search("#needleChart li").inner_text
