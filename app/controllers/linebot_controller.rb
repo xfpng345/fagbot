@@ -5,7 +5,8 @@ class LinebotController < ApplicationController
   require 'mechanize'
   agent = Mechanize.new
   url = agent.get("https://money.cnn.com/data/fear-and-greed/")
-  elements = url.search("#needleChart li")
+  binging.pry
+  elements = url.search("#needleChart li").inner_text
   # callbackアクションのCSRFトークン認証を無効
   protect_from_forgery :except => [:callback]
 
