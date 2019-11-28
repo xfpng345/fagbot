@@ -21,9 +21,12 @@ class LinebotController < ApplicationController
         case event.type
             when Line::Bot::Event::MessageType::Text
             input = event.message['text']
+            agent = Mechanize.new
+            url = agent.get("https://money.cnn.com/data/fear-and-greed/")
+            elements = url.search("#needleChart li")
             message = {
               type: 'text',
-              text: input
+              text: elements
             }
             client.reply_message(event['replyToken'], message)
           when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
