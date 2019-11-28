@@ -19,21 +19,32 @@ class LinebotController < ApplicationController
       #おうむ返し
       when Line::Bot::Event::Message
         case event.type
-        # ユーザーからテキスト形式のメッセージが送られて来た場合
-        when Line::Bot::Event::MessageType::Text
-          input = event.message["text"]
-          agent = Mechanize.new
-          url = agent.get("https://money.cnn.com/data/fear-and-greed/")
-          elements = url.search("#needleChart li")
-          day = ["今","最近","一週間前","１ヶ月前","１年前"]
-        case input
-          when /.*(明日|あした).*/
+            when Line::Bot::Event::MessageType::Text
             message = {
               type: 'text',
-              text: elements
+              text: event.message['text']
             }
             client.reply_message(event['replyToken'], message)
-        end
+          when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
+            response = client.get_message_content(event.message['id'])
+            tf = Tempfile.open("content")
+            tf.write(response.body)
+          end
+        # ユーザーからテキスト形式のメッセージが送られて来た場合
+        # when Line::Bot::Event::MessageType::Text
+        #   input = event.message["text"]
+        #   agent = Mechanize.new
+        #   url = agent.get("https://money.cnn.com/data/fear-and-greed/")
+        #   elements = url.search("#needleChart li")
+        #   day = ["今","最近","一週間前","１ヶ月前","１年前"]
+        # case input
+        #   when /.*(明日|あした).*/
+        #     message = {
+        #       type: 'text',
+        #       text: elements
+        #     }
+        #     client.reply_message(event['replyToken'], message)
+        # end
         # LINEお友達追された場合
       when Line::Bot::Event::Follow
         # 登録したユーザーのidをユーザーテーブルに格納
