@@ -21,25 +21,18 @@ class LinebotController < ApplicationController
         case event.type
         # ユーザーからテキスト形式のメッセージが送られて来た場合
         when Line::Bot::Event::MessageType::Text
-          inputs = event.message["text"]
+          input = event.message["text"]
           agent = Mechanize.new
           url = agent.get("https://money.cnn.com/data/fear-and-greed/")
           elements = url.search("#needleChart li")
           day = ["今","最近","一週間前","１ヶ月前","１年前"]
-        case inputs
-        when
-          input = inputs.chomp
-          elements.zip(day).each do |ele, d|
-            b = ele.inner_text
-            a = d
-            if input == a
-              push = b
-              message = {
-                type: 'text',
-                text: push
-              }
-            end
-          end
+        case input
+          when /.*(明日|あした).*/
+            message = {
+              type: 'text',
+              text: elements
+            }
+            client.reply_message(event['replyToken'], message)
         end
         # LINEお友達追された場合
       when Line::Bot::Event::Follow
