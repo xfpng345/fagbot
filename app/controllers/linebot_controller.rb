@@ -20,7 +20,7 @@ class LinebotController < ApplicationController
       when Line::Bot::Event::Message
         case event.type
             when Line::Bot::Event::MessageType::Text
-            input = event.message['text']
+            input = "a"#event.message['text']
             agent = Mechanize.new
             url = agent.get("https://money.cnn.com/data/fear-and-greed/")
             elements = url.search("#needleChart li")
