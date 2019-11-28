@@ -20,13 +20,13 @@ class LinebotController < ApplicationController
       when Line::Bot::Event::Message
         case event.type
             when Line::Bot::Event::MessageType::Text
-            input = "a"#event.message['text']
             agent = Mechanize.new
             url = agent.get("https://money.cnn.com/data/fear-and-greed/")
             elements = url.search("#needleChart li")
+            input = event.message['text']
             message = {
               type: 'text',
-              text: input
+              text: "y"
             }
             client.reply_message(event['replyToken'], message)
           end
