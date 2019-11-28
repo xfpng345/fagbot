@@ -29,8 +29,6 @@ class LinebotController < ApplicationController
               text: input
             }
             client.reply_message(event['replyToken'], message)
-          when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
-            client.reply_message(event['replyToken'], message)
           end
         # ユーザーからテキスト形式のメッセージが送られて来た場合
         # when Line::Bot::Event::MessageType::Text
