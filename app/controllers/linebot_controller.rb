@@ -3,10 +3,7 @@ class LinebotController < ApplicationController
   require 'open-uri'
   require 'kconv'
   require 'mechanize'
-  agent = Mechanize.new
-  url = agent.get("https://money.cnn.com/data/fear-and-greed/")
-  binging.pry
-  elements = url.search("#needleChart li").inner_text
+
   # callbackアクションのCSRFトークン認証を無効
   protect_from_forgery :except => [:callback]
 
@@ -19,14 +16,17 @@ class LinebotController < ApplicationController
     events = client.parse_events_from(body)
     events.each { |event|
       case event
-      #メッセージが送られた時
+      #おうむ返し
       when Line::Bot::Event::Message
         case event.type
             when Line::Bot::Event::MessageType::Text
+            agent = Mechanize.new
+            url = agent.get("https://money.cnn.com/data/fear-and-greed/")
+            elements = url.search("#needleChart li")
             input = event.message['text']
             message = {
               type: 'text',
-              text: "a"
+              text: elements
             }
             client.reply_message(event['replyToken'], message)
           end
