@@ -27,13 +27,17 @@ class LinebotController < ApplicationController
           elements = url.search("#needleChart li")
           day = ["今","最近","一週間前","１ヶ月前","１年前"]
         case inputs
-        when /.*(今|いま).*/
+        when
           input = inputs.chomp
           elements.zip(day).each do |ele, d|
             b = ele.inner_text
             a = d
             if input == a
-              puts b
+              push = b
+              message = {
+                type: 'text',
+                text: push
+              }
             end
           end
         end
