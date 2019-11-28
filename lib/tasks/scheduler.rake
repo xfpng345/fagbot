@@ -13,9 +13,6 @@ task :update_feed => :environment do
   agent = Mechanize.new
   url = agent.get("https://money.cnn.com/data/fear-and-greed/")
   elements = url.search("#needleChart li").inner_text
-  # #htmlデータをパース
-  # ul = open( url ).read.toutf8
-  # doc = REXML::Document.new(ul)
   #メッセージの発信先idを配列で渡す必要があるため、userテーブルよりpluck関数を使ってidを配列で取得
   user_ids = User.all.pluck(:line_id)
   message = {
