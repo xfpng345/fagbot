@@ -18,14 +18,14 @@ class LinebotController < ApplicationController
     events = client.parse_events_from(body)
     events.each { |event|
       case event
-      #おうむ返し
+      #メッセージが送られた時
       when Line::Bot::Event::Message
         case event.type
             when Line::Bot::Event::MessageType::Text
             input = event.message['text']
             message = {
               type: 'text',
-              text: elements
+              text: "a"
             }
             client.reply_message(event['replyToken'], message)
           end
