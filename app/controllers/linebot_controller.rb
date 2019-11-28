@@ -26,7 +26,7 @@ class LinebotController < ApplicationController
             elements = url.search("#needleChart li")
             message = {
               type: 'text',
-              text: elements
+              text: input
             }
             client.reply_message(event['replyToken'], message)
           when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
