@@ -2,6 +2,7 @@ class LinebotController < ApplicationController
   require 'line/bot'  # gem 'line-bot-api'
   require 'open-uri'
   require 'kconv'
+  require 'mechanize'
 
   # callbackアクションのCSRFトークン認証を無効
   protect_from_forgery :except => [:callback]
@@ -15,18 +16,26 @@ class LinebotController < ApplicationController
     events = client.parse_events_from(body)
     events.each { |event|
       case event
+      #おうむ返し
       when Line::Bot::Event::Message
         case event.type
+        # ユーザーからテキスト形式のメッセージが送られて来た場合
         when Line::Bot::Event::MessageType::Text
-          message = {
-            type: 'text',
-            text: event.message['text']
-          }
-          client.reply_message(event['replyToken'], message)
-        when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
-          response = client.get_message_content(event.message['id'])
-          tf = Tempfile.open("content")
-          tf.write(response.body)
+          inputs = event.message["text"]
+          agent = Mechanize.new
+          url = agent.get("https://money.cnn.com/data/fear-and-greed/")
+          elements = url.search("#needleChart li")
+          day = ["今","最近","一週間前","１ヶ月前","１年前"]
+        case inputs
+        when
+          input = inputs.chomp
+          elements.zip(day).each do |ele, d|
+            b = ele.inner_text
+            a = d
+            if input == a
+              puts b
+            end
+          end
         end
         # LINEお友達追された場合
       when Line::Bot::Event::Follow
