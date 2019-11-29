@@ -34,8 +34,8 @@ class LinebotController < ApplicationController
               type: 'text',
               text: now
             }
-            client.reply_message(event['replyToken'], message)
           end
+          client.reply_message(event['replyToken'], message)
         end
       when Line::Bot::Event::Follow
         # 登録したユーザーのidをユーザーテーブルに格納
