@@ -32,7 +32,7 @@ class LinebotController < ApplicationController
             agent2 = Mechanize.new
             url2 = agent2.get("https://www.bloomberg.co.jp/quote/SPXL:US")
             spxl = url2.search(".price").inner_text
-            message = "本日のSPXLは#{spxl}US$です。\n#{now}\n#{close}\n#{week}\n#{month}\n#{year}"
+            message = "本日のSPXLは#{spxl}US$です。\n#{now}\n#{close}\n#{week}\n#{month}\n#{year}\nhttps://money.cnn.com/data/fear-and-greed/\nhttps://www.bloomberg.co.jp/quote/SPXL:US"
             input = event.message['text']
           case input
           when /.*(今|いま|now).*/
