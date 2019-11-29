@@ -29,10 +29,30 @@ class LinebotController < ApplicationController
             year = url.search("#needleChart li").children[4].inner_text
             input = event.message['text']
           case input
-          when /.*(今|いま).*/
+          when /.*(今|いま|now).*/
             message = {
               type: 'text',
               text: now
+            }
+          when /.*(最近|さいきん|close).*/
+            message = {
+              type: 'text',
+              text: close
+            }
+          when /.*(週|しゅう|week).*/
+            message = {
+              type: 'text',
+              text: week
+            }
+          when /.*(月|つき|month).*/
+            message = {
+              type: 'text',
+              text: month
+            }
+          when /.*(年|ねん|year).*/
+            message = {
+              type: 'text',
+              text: year
             }
           end
           client.reply_message(event['replyToken'], message)
