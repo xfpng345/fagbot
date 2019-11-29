@@ -26,7 +26,7 @@ class LinebotController < ApplicationController
             input = event.message['text']
             message = {
               type: 'text',
-              text: input
+              text: elements
             }
             client.reply_message(event['replyToken'], message)
           end
