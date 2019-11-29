@@ -34,13 +34,13 @@ class LinebotController < ApplicationController
             spxl = url2.search(".price").inner_text
             fagLink = "https://money.cnn.com/data/fear-and-greed/"
             spxlLink = "https://www.bloomberg.co.jp/quote/SPXL:US"
-            message = "本日のSPXLは#{spxl}US$です。\n#{now}\n#{close}\n#{week}\n#{month}\n#{year}\n#{fagLink}\n#{spxlLink}"
+            reply = "本日のSPXLは#{spxl}US$です。\n#{now}\n#{close}\n#{week}\n#{month}\n#{year}\n#{fagLink}\n#{spxlLink}"
             input = event.message['text']
           case input
           when /.*(今|いま|now).*/
             message = {
               type: 'text',
-              text: message
+              text: now
             }
           when /.*(最近|さいきん|close).*/
             message = {
@@ -61,6 +61,11 @@ class LinebotController < ApplicationController
             message = {
               type: 'text',
               text: year
+            }
+          when input
+            message = {
+              type: 'text',
+              text: reply
             }
           end
           client.reply_message(event['replyToken'], message)
