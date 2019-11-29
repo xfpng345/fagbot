@@ -16,20 +16,27 @@ class LinebotController < ApplicationController
     events = client.parse_events_from(body)
     events.each { |event|
       case event
-      #おうむ返し
+      # ユーザーのメッセージによって返信を分ける
       when Line::Bot::Event::Message
         case event.type
-            when Line::Bot::Event::MessageType::Text
+          when Line::Bot::Event::MessageType::Text
             agent = Mechanize.new
             url = agent.get("https://money.cnn.com/data/fear-and-greed/")
             now = url.search("#needleChart li").children[0].inner_text
+            close = url.search("#needleChart li").children[1].inner_text
+            week = url.search("#needleChart li").children[2].inner_text
+            month = url.search("#needleChart li").children[3].inner_text
+            year = url.search("#needleChart li").children[4].inner_text
             input = event.message['text']
+          case input
+          when /.*(今|いま).*/
             message = {
               type: 'text',
               text: now
             }
             client.reply_message(event['replyToken'], message)
           end
+        end
       when Line::Bot::Event::Follow
         # 登録したユーザーのidをユーザーテーブルに格納
         line_id = event['source']['userId']
