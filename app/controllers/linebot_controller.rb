@@ -22,30 +22,14 @@ class LinebotController < ApplicationController
             when Line::Bot::Event::MessageType::Text
             agent = Mechanize.new
             url = agent.get("https://money.cnn.com/data/fear-and-greed/")
-            elements = url.search("#needleChart li")
+            now = url.search("#needleChart li").children[0].inner_text
             input = event.message['text']
             message = {
               type: 'text',
-              text: elements
+              text: now
             }
             client.reply_message(event['replyToken'], message)
           end
-        # ユーザーからテキスト形式のメッセージが送られて来た場合
-        # when Line::Bot::Event::MessageType::Text
-        #   input = event.message["text"]
-        #   agent = Mechanize.new
-        #   url = agent.get("https://money.cnn.com/data/fear-and-greed/")
-        #   elements = url.search("#needleChart li")
-        #   day = ["今","最近","一週間前","１ヶ月前","１年前"]
-        # case input
-        #   when /.*(明日|あした).*/
-        #     message = {
-        #       type: 'text',
-        #       text: elements
-        #     }
-        #     client.reply_message(event['replyToken'], message)
-        # end
-        # LINEお友達追された場合
       when Line::Bot::Event::Follow
         # 登録したユーザーのidをユーザーテーブルに格納
         line_id = event['source']['userId']
